@@ -4,6 +4,7 @@ import (
 	"archive/tar"
 	"bytes"
 	"os"
+	"path/filepath"
 
 	"github.com/twpayne/go-vfs/v4"
 )
@@ -72,7 +73,7 @@ func (t *Tar) buildFromFS(tw *tar.Writer, p string) error {
 		}
 
 		tarHeader := &tar.Header{
-			Name: path,
+			Name: filepath.Join("data", path),
 			Size: int64(len(f)),
 		}
 

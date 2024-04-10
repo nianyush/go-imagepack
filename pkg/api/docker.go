@@ -2,9 +2,9 @@ package api
 
 import (
 	"bytes"
-	"io"
-
 	_ "embed"
+	"io"
+	"os"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
@@ -22,7 +22,7 @@ func DockerBuild(ctx util.Contenxt, image string, path ...string) error {
 	}
 	defer cli.Close()
 
-	buildContext, err := getBuildContext(ctx.FS, path...)
+	buildContext, err := getBuildContext(ctx.FS, true, path...)
 	if err != nil {
 		return err
 	}
@@ -30,6 +30,7 @@ func DockerBuild(ctx util.Contenxt, image string, path ...string) error {
 	buildOpts := types.ImageBuildOptions{
 		Context:    buildContext,
 		Dockerfile: "Dockerfile",
+		Remove:     true,
 		Tags:       []string{image},
 	}
 
@@ -41,12 +42,18 @@ func DockerBuild(ctx util.Contenxt, image string, path ...string) error {
 	}
 
 	defer resp.Body.Close()
-
+	_, err = io.Copy(os.Stdout, resp.Body)
+	if err != nil {
+		return err 
+	}
 	return nil
 }
 
-func getBuildContext(fs vfs.FS, path ...string) (io.Reader, error) {
-	ta := util.NewTar(fs).AddBytes("Dockerfile", dockerfile)
+func getBuildContext(fs vfs.FS, includeDockerfile bool, path ...string) (io.Reader, error) {
+	ta := util.NewTar(fs)
+	if includeDockerfile {
+		ta.AddBytes("Dockerfile", dockerfile)
+	}
 	for _, p := range path {
 		ta.AddPath(p)
 	}

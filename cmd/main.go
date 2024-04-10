@@ -26,12 +26,14 @@ func main() {
 				os.Exit(1)
 			}
 
+			pathFS := vfs.NewPathFS(vfs.OSFS, absPath)
+
 			ctx := util.Contenxt{
 				Ctx: context.Background(),
-				FS:  vfs.OSFS,
+				FS:  pathFS,
 			}
 
-			if err := api.DockerBuild(ctx, image, absPath); err != nil {
+			if err := api.DockerBuild(ctx, image, "/"); err != nil {
 				panic(err)
 			}
 		},
