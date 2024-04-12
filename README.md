@@ -2,5 +2,6 @@
 
 # Usage
 ```
-./pack <image> <path>
+./imagectl pack <image> <path>
+./imagectl unpack [--local] <image> <path>
 ```

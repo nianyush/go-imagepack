@@ -16,7 +16,7 @@ build:
     COPY go.sum go.sum
     RUN go mod tidy
     RUN go mod download
-    RUN go build -ldflags="-w -s" -o pack cmd/main.go
-    RUN upx -1 pack
+    RUN go build -ldflags="-w -s" -o imagectl cmd/main.go
+    RUN upx -1 imagectl
 
-    SAVE ARTIFACT pack AS LOCAL ./build/pack
+    SAVE ARTIFACT imagectl AS LOCAL ./build/imagectl
