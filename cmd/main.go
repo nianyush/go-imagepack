@@ -43,6 +43,8 @@ var packcmd = &cobra.Command{
 			os.Exit(1)
 		}
 
+		slog.Info(fmt.Sprintf("packing image %s from %s", image, absPath))
+
 		pathFS := vfs.NewPathFS(vfs.OSFS, absPath)
 
 		ctx := util.Contenxt{
