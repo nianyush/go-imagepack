@@ -3,7 +3,7 @@ module github.com/nianyush/go-imagepack
 go 1.22.2
 
 require (
-	github.com/docker/docker v26.1.4+incompatible
+	github.com/docker/docker v26.1.5+incompatible
 	github.com/kairos-io/kairos-sdk v0.0.29
 	github.com/spf13/cobra v1.8.0
 	github.com/twpayne/go-vfs/v4 v4.3.0
